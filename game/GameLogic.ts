@@ -1,72 +1,69 @@
-import React, { Component } from "react";
-import Canvas from 'react-native-canvas';
+import { Vector3 } from 'three';
+import { GameViewState } from './GameView';
 import Values from "../constants/Values";
-
+import { Body, Vector } from "matter-js";
+import GameLogicBoard from './GameLogicBoard';
 class GameLogic {
     public boards: Board[] = [];
     public player: Player = new Player(0, 0);
     private ySpeed: number = 0;
-    generate(boards: number, width: number, height: number) {
+    private gameLogicBoard: GameLogicBoard;
+    generate() {
+        let boardsCount: number = Values.boardsCount;
+        let width: number = Values.worldSpaceWidth;
+        let height: number = Values.worldSpaceHeight;
+
         this.player = new Player(width / 2, height / 2);
         this.boards = [];
-        for (var i: number = 0; i < boards; ++i) {
-            this.boards.push(new Board(width, height));
+        for (var i: number = 0; i < boardsCount; ++i) {
+            this.boards.push(new Board());
         }
-        Values.score++;
+        this.gameLogicBoard = new GameLogicBoard(this);
     }
 
-    move(stageWidth: number, stageHeight: number, xSpeed: number) {
-        this.player.x += xSpeed;
-        this.ySpeed--;
-        this.player.y += this.ySpeed;
-        let hit = false;
+    move(stageWidth: number, stageHeight: number) {
+        if (this.player.body == null) {
+            return;
+        }
+        this.player.x = this.player.body.position.x;
+        this.player.y = this.player.body.position.y;
+
         if (this.player.y < 0) {
-            this.player.x=stageWidth / 2;
-            this.player.y=stageHeight / 2;
-            this.ySpeed=10;
-            Values.score=0;
+            Body.setPosition(this.player.body, { x: stageWidth / 2, y: stageHeight / 2 });
+            Body.setVelocity(this.player.body, { x: 0, y: Values.gravity });
+            this.player.y = stageHeight / 2;
+    		Values.maxScore=Math.max(Values.score,Values.maxScore);
+
+            Values.score = 0;
             return;
 
         }
-        let minX:number=1000;
-        let minY:number=1000;
         this.boards.forEach(b => {
-            b.x += b.speedX;
-
-            if (b.x < 0) {
+            let body: Body = b.body;
+            let pos:Vector=body.position;
+          
+            let newX = pos.x + b.speedX;
+            let newY = pos.y + b.speedY;
+            if (pos.x < 0) {
                 b.speedX *= -1;
-                b.x = 2
-            } else if (b.x > stageWidth) {
+                newX = 2
+            } else if (pos.x > stageWidth) {
                 b.speedX *= -1;
-                b.x = stageWidth - 2
+                newX = stageWidth - 2
             }
 
-            b.y += b.speedY;
-            if (b.y < 0) {
+            if (pos.y < 0) {
                 b.speedY *= -1;
-                b.y = 2
-            } else if (b.y > stageHeight) {
+                newY = 2
+            } else if (pos.y > stageHeight) {
                 b.speedY *= -1;
-                b.y = stageHeight - 2
+                newY = stageHeight - 2
             }
+            b.rotation+=b.rotationSpeed;
+            Body.setPosition(b.body, { x: newX, y: newY });
 
-            let xDelta=this.player.x-b.x;
-            minX=Math.min(minX,Math.abs(xDelta));
-            let yDelta=this.player.y-b.y;
-            minY=Math.min(minY,Math.abs(yDelta));
-
-            if (Math.abs(xDelta)< Values.boardWidth) {
-                if (yDelta<0 && yDelta>this.ySpeed) {
-                    this.player.y += b.y+Values.playerSize/2;
-                                       hit = true;
-                }
-            }
         })
-        console.log("min_x",minX,"minY",minY);
-        if (hit) {
-            this.ySpeed = Values.jumpHeight/Values.gravity;
-       //     stageHeight=10*t^2
-        }
+
     }
 }
 class Player {
@@ -74,23 +71,24 @@ class Player {
     public y: number;
     public scale: number = 1;
     public tag: any;
+    public body: Body;
     constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
     }
 }
 class Board {
-    public x: number;
-    public y: number;
     public tag: any;
+    public body: Body;
     public speedX: number;
     public speedY: number;
-    private r: number = 0;
-    constructor(width: number, height: number) {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
+    public rotationSpeed: number = 0;
+    public rotation:number=0;
+    constructor() {
         this.speedX = (Math.random() * 10) - 5;
         this.speedY = (Math.random() * 10) - 5;
+        this.rotationSpeed =Math.random() * 0.1-0.05;//2000;//-Math.PI/100;
+        console.log("r", this.rotationSpeed + "," + this.rotationSpeed / Math.PI + "pi");
     }
 
 
