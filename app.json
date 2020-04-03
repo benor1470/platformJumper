@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Tab Navigation Template Typescript",
-    "slug": "clean",
+    "name": "platform jumper game",
+    "slug": "platform-jumper",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -10,12 +10,21 @@
       "web"
     ],
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "landscape",
     "icon": "./assets/images/icon.png",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "bundleIdentifier": "com.benor.platformJumper",
+      "buildNumber": "1.0.0",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.benor.platformJumper",
+      "versionCode": 1
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,9 +32,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
     "androidNavigationBar": {
       "visible": false
     },

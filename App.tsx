@@ -7,6 +7,7 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
 import { ScreenOrientation } from 'expo';
 import GameView from './game/GameView';
+import HomeScreen from './menu/HomeScreen';
 
 type BaseProps = {
   skipLoadingScreen?: boolean;
@@ -27,7 +28,7 @@ export const App: React.FC<BaseProps> = props => {
   return (
     <View style={styles.container}>
       {Platform.OS === 'ios' && <StatusBar barStyle='default' />}
-      <GameView />
+      <HomeScreen />
       {/* <AppNavigator /> */}
     </View>
   );
