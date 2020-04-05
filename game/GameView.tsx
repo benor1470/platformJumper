@@ -120,34 +120,14 @@ class GameView extends React.Component<any, GameViewState> {
 				line.rotation.z = b.rotation;
 			});
 
-			/*this.logic.pickups.forEach(p => {
-				if (p.tag == null) {
-					debugger;
-					p.getImage().then(texture => {
-						console.log("loaded");
-						let material: Material = new MeshBasicMaterial({ map: texture });
-						let playerGeometry = new CircleGeometry(Values.pickupSize, 50);
-						p.tag = new Mesh(playerGeometry, material);//, new LineBasicMaterial({ color: 0xffffff, linewidth: 50 }));
-						p.tag.position.set(p.body.position.x-Values.worldSpaceHeight/2,p.body.position.y-Values.worldSpaceHeight/2,0);
-						this.scene.add(p.tag);
-						console.log("created pickup");
-
-					}).catch(e => {
-						console.log("can't load", e);
-					})
-				}
-			})*/
-
 			let player: Line = this.logic.player.tag;
 
 			if (player != null) {
 				player.position.x = this.logic.player.x - Values.worldSpaceWidth / 2;
 				player.position.y = this.logic.player.y - Values.worldSpaceHeight / 2;
 			}
-			Values.score++;
-
 			let msg: string = "\n";
-			//Values.msgs = Values.msgs.filter(m => m.time - time > Values.timeForMessage).sort((a, b) => a - b);
+			Values.msgs = Values.msgs.filter(m => Date.now()-m.time < Values.timeForMessage).sort((a, b) => a - b);
 			Values.msgs.forEach(m => {
 				msg += m.msg + "\n";
 			})
@@ -184,14 +164,14 @@ class GameView extends React.Component<any, GameViewState> {
 
 	render() {
 		return (
-			<View style={{ flex: 1 }}>
-				<Text ref={this.outputRef} style={{ width: 300, height: 500, position: 'absolute', backgroundColor: 0x000000, top: 20, left: 50, zIndex: 2 }}>score: {Values.score}, max score {Values.maxScore} 
+			<View style={{ flex: 1 }} onTouchStart={this.onTouchStart} >
+				<Text ref={this.outputRef} style={{ width: 300, height: 500, position: 'absolute', backgroundColor: 0x000000, top: 20, left: 50, zIndex: 2, userSelect: "none" }}>score: {Math.round(Values.score)}, max score {Math.round(Values.maxScore)}
 					{this.state.outputDebug}</Text>
 				{/* <Canvas ref={this.canvasForDebug}  style={{ flex: 1, position: 'absolute', top: 20, left: 50, zIndex: 1 }} /> */}
 				<GLView ref={this.glView}
 					onContextCreate={this.onContextCreate}
 					style={{ flex: 1 }}
-					onTouchStart={this.onTouchStart} onTouchEnd={this.onTouchStart} onTouchMove={this.onTouchStart} onTouchEndCapture={this.onTouchStart} onTouchCancel={this.onTouchStart} />
+					onTouchEnd={this.onTouchStart} onTouchMove={this.onTouchStart} onTouchEndCapture={this.onTouchStart} onTouchCancel={this.onTouchStart} />
 			</View>
 		)
 	}

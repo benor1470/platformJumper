@@ -4,6 +4,7 @@ export default {
 	worldSpaceHeight: 1240,//Math.max(gl.drawingBufferHeight,300);//1240
 	worldSpaceWidth:2204,//worldSpaceHeight * ratio,//2204.44444
   score:0,
+  scoreGainPerSec:1,
   maxScore:0,
   boardsCount:40,
   boardWidth:150,
@@ -20,5 +21,5 @@ export default {
   pickupPopupBoarderY:100,
   pickupSize:50,
   msgs:[],
-  timeForMessage:3000,
+  timeForMessage:5000,
 };
