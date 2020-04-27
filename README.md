@@ -1,1 +1,3 @@
-some day use this (https://github.com/kefranabg/readme-md-generator)_
+simple platform game, it's working but not fun so I wont keep working on it
+
+but enjoy using it as a working sample for a cross platform 2d game using expo, matter (for physic) and three for a 2d visual over openGL
