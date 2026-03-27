@@ -397,6 +397,12 @@ const WAVES = [
   { score: 90, msg: 'WAVE 6  —  Homing missiles!' },
 ];
 
+// ── Persistent best score ─────────────────────────────────────
+const SAVE_KEY = 'pj_best';
+let savedBest = (() => {
+  try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || null; } catch(e) { return null; }
+})();
+
 // ── Build agenda from config ──────────────────────────────────
 (function buildAgenda() {
   const el = document.getElementById('agenda');
@@ -441,11 +447,25 @@ const WAVES = [
   document.getElementById('mob-play-btn').addEventListener('click', () => startGame());
 })();
 
+// ── Populate best score on first load ────────────────────────
+(function initBestDisplay() {
+  if (!savedBest) return;
+  const recordText = '🏆 Best: ' + savedBest.score;
+  const puText = savedBest.powerups && savedBest.powerups.length
+    ? savedBest.powerups.map(t => POWERUPS[t] ? POWERUPS[t].icon : '').join(' ')
+    : '';
+  document.getElementById('record-line').innerHTML =
+    recordText + (puText ? ' <span style="opacity:0.7;font-size:0.85em">' + puText + '</span>' : '');
+  document.getElementById('mob-record').innerHTML =
+    recordText + (puText ? '<br><span style="opacity:0.65;font-size:0.85em">' + puText + '</span>' : '');
+})();
+
 // ── State ─────────────────────────────────────────────────────
 let gameState    = 'menu';  // 'menu' | 'playing'
 let gameOverTime = 0;
 let score     = 0;
-let maxScore  = 0;
+let maxScore  = savedBest ? (savedBest.score || 0) : 0;
+let sessionPowerups = [];   // powerups collected this game
 let player, boards, pickups;
 let enemies, bullets;
 let lastTime  = null;
@@ -566,7 +586,7 @@ function randomBoardKind() {
 
 // ── Init ──────────────────────────────────────────────────────
 function initGame(resetScore = true) {
-  if (resetScore) { score = 0; gameTime = 0; effects = {}; }
+  if (resetScore) { score = 0; gameTime = 0; effects = {}; sessionPowerups = []; }
   pickups = [];
   enemies = [];
   bullets = [];
@@ -657,6 +677,7 @@ function checkPickups() {
       const cfg = POWERUPS[pk.type];
       effects[pk.type] = gameTime + cfg.dur;
       score += cfg.bonus;
+      sessionPowerups.push(pk.type);
       showMsg(cfg.icon + ' ' + cfg.label + '  +' + cfg.bonus);
       sndPowerup();
     }
@@ -674,10 +695,20 @@ function showMsg(text) {
 // ── Game-over helper ──────────────────────────────────────────
 function triggerGameOver() {
   sndGameOver();
-  maxScore = Math.max(maxScore, Math.floor(score));
+  const finalScore = Math.floor(score);
+  if (finalScore > maxScore) {
+    maxScore = finalScore;
+    savedBest = { score: finalScore, powerups: [...sessionPowerups] };
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(savedBest)); } catch(e) {}
+  }
   const recordText = maxScore > 0 ? '🏆 Best: ' + maxScore : '';
-  document.getElementById('record-line').textContent = recordText;
-  document.getElementById('mob-record').textContent  = recordText;
+  const puText = savedBest && savedBest.powerups && savedBest.powerups.length
+    ? savedBest.powerups.map(t => POWERUPS[t].icon).join(' ')
+    : '';
+  document.getElementById('record-line').innerHTML =
+    recordText + (puText ? ' <span style="opacity:0.7;font-size:0.85em">' + puText + '</span>' : '');
+  document.getElementById('mob-record').innerHTML =
+    recordText + (puText ? '<br><span style="opacity:0.65;font-size:0.85em">' + puText + '</span>' : '');
   document.getElementById('overlay').style.display = 'flex';
   document.getElementById('overlay-mobile').style.display = '';
   gameState    = 'menu';
