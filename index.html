@@ -189,6 +189,72 @@
       #overlay-mobile { display: flex; }
     }
 
+    /* ── PGS leaderboard panel ── */
+    #pgs-panel {
+      margin-top: 1.4em;
+      background: rgba(0,10,40,0.7);
+      border: 1px solid rgba(0,150,255,0.2);
+      border-radius: 12px;
+      padding: 0.8em 1em;
+      width: min(420px, 88vw);
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    #pgs-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 0.6em; gap: 0.5em;
+    }
+    #pgs-player {
+      font-size: 0.75em; color: #88ccff;
+      display: none; flex: 1; text-align: left;
+    }
+    #pgs-signin, #pgs-signout {
+      display: none;
+      align-items: center; gap: 0.4em;
+      padding: 0.3em 0.85em; border-radius: 20px;
+      font-size: 0.72em; font-weight: bold; cursor: pointer;
+      border: none; white-space: nowrap;
+    }
+    #pgs-signin  { background: #4285f4; color: #fff; }
+    #pgs-signout { background: rgba(255,255,255,0.1); color: #88aacc; border: 1px solid rgba(255,255,255,0.15); }
+    #pgs-signin:active, #pgs-signout:active { opacity: 0.8; }
+    .pgs-tabs {
+      display: flex; gap: 0; margin-bottom: 0.55em;
+      border-bottom: 1px solid rgba(0,150,255,0.15);
+    }
+    .pgs-tab {
+      flex: 1; padding: 0.3em 0; text-align: center;
+      font-size: 0.68em; font-weight: bold; letter-spacing: 0.06em;
+      color: #445566; cursor: pointer; border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .pgs-tab.active { color: #00d4ff; border-bottom-color: #00d4ff; }
+    .pgs-tab:hover  { color: #88ccff; }
+    #pgs-lb-body { min-height: 4em; }
+    .pgs-lb-msg  { text-align: center; color: #334455; font-size: 0.72em; padding: 1em 0; }
+    .pgs-lb-row  {
+      display: grid; grid-template-columns: 2.2em 1fr auto;
+      align-items: center; gap: 0.4em;
+      font-size: 0.72em; padding: 0.22em 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .pgs-lb-row:first-child { border-top: none; }
+    .pgs-lb-me   { background: rgba(0,180,255,0.08); border-radius: 5px; padding: 0.22em 0.3em; }
+    .pgs-lb-rank { color: #446688; font-weight: bold; }
+    .pgs-lb-name { color: #aaccdd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pgs-lb-score{ color: #ffdd44; font-weight: bold; white-space: nowrap; }
+
+    /* Mobile PGS panel — sits below mob-right */
+    #mob-pgs-panel {
+      display: flex; flex-direction: column;
+      border-top: 1px solid rgba(0,150,255,0.12);
+      padding: 0.5em 1em 0.5em 1em;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    #mob-pgs-panel .pgs-tabs  { margin-bottom: 0.35em; }
+    #mob-pgs-panel .pgs-tab   { font-size: 0.6em; }
+    #mob-pgs-panel .pgs-lb-row{ font-size: 0.62em; }
+    #mob-pgs-panel #pgs-header{ margin-bottom: 0.35em; }
+
     /* Danger vignette */
     #vignette {
       position: fixed; inset: 0; pointer-events: none;
@@ -287,6 +353,20 @@
     Collect ⭐ and powerups · platforms rotate at 15
   </div>
   <div id="agenda"></div>
+
+  <div id="pgs-panel">
+    <div id="pgs-header">
+      <span id="pgs-player"></span>
+      <button id="pgs-signin"  onclick="PGS.signIn()">🎮 Sign in</button>
+      <button id="pgs-signout" onclick="PGS.signOut()">Sign out</button>
+    </div>
+    <div class="pgs-tabs">
+      <div class="pgs-tab active" data-span="ALL_TIME">All Time</div>
+      <div class="pgs-tab"        data-span="WEEKLY">Weekly</div>
+      <div class="pgs-tab"        data-span="DAILY">Daily</div>
+    </div>
+    <div id="pgs-lb-body"><div class="pgs-lb-msg">Sign in to see the leaderboard</div></div>
+  </div>
 </div>
 
 <!-- Mobile-optimised title screen (landscape, no scroll) -->
@@ -302,8 +382,24 @@
     <div class="mob-agenda-title">Powerups</div>
     <div id="mob-agenda"></div>
   </div>
+  <div id="mob-pgs-panel">
+    <div id="pgs-header" style="display:none"></div><!-- shared state, hidden on mobile -->
+    <div class="pgs-tabs">
+      <div class="pgs-tab active" data-span="ALL_TIME">All Time</div>
+      <div class="pgs-tab"        data-span="WEEKLY">Weekly</div>
+      <div class="pgs-tab"        data-span="DAILY">Daily</div>
+    </div>
+    <div id="pgs-lb-body-mob"><div class="pgs-lb-msg">Sign in to see scores</div></div>
+    <div style="margin-top:0.4em;text-align:center">
+      <button id="mob-pgs-signin"  onclick="PGS.signIn()" style="display:none;background:#4285f4;color:#fff;border:none;border-radius:20px;padding:0.3em 1em;font-size:0.65em;font-weight:bold;cursor:pointer">🎮 Sign in</button>
+      <button id="mob-pgs-signout" onclick="PGS.signOut()" style="display:none;background:rgba(255,255,255,0.1);color:#88aacc;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:0.3em 1em;font-size:0.65em;cursor:pointer">Sign out</button>
+      <span id="mob-pgs-player" style="display:none;color:#88ccff;font-size:0.65em"></span>
+    </div>
+  </div>
 </div>
 
+<script src="https://accounts.google.com/gsi/client" async></script>
+<script src="pgs.js"></script>
 <script src="gameLogic.js"></script>
 <script>
 // ============================================================
@@ -701,6 +797,7 @@ function triggerGameOver() {
     savedBest = { score: finalScore, powerups: [...sessionPowerups] };
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(savedBest)); } catch(e) {}
   }
+  PGS.onGameOver(finalScore);
   const recordText = maxScore > 0 ? '🏆 Best: ' + maxScore : '';
   const puText = savedBest && savedBest.powerups && savedBest.powerups.length
     ? savedBest.powerups.map(t => POWERUPS[t].icon).join(' ')
@@ -1405,6 +1502,77 @@ document.addEventListener('keydown', e => {
     requestAnimationFrame(menuBg);
   }
 })();
+
+// ── PGS leaderboard tab switching ────────────────────────────
+(function initPGSTabs() {
+  let cachedData = null;
+
+  async function switchTab(tab, allTabs, bodyEl) {
+    allTabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    if (!PGS.isSignedIn()) return;
+    if (!cachedData) cachedData = await PGS.fetchAllTimeSpans();
+    renderBody(bodyEl, tab.dataset.span, cachedData);
+  }
+
+  function renderBody(bodyEl, span, data) {
+    if (!bodyEl || !data) return;
+    const entries = data[span];
+    if (!entries || entries.length === 0) {
+      bodyEl.innerHTML = '<div class="pgs-lb-msg">No scores yet</div>'; return;
+    }
+    bodyEl.innerHTML = entries.map((e, i) => {
+      const rank  = e.scoreRank || (i + 1);
+      const name  = e.player?.displayName || 'Anonymous';
+      const score = Number(e.scoreValue || 0).toLocaleString();
+      return `<div class="pgs-lb-row">
+        <span class="pgs-lb-rank">#${rank}</span>
+        <span class="pgs-lb-name">${name}</span>
+        <span class="pgs-lb-score">${score}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // Invalidate cache when new data arrives
+  const origRefresh = PGS.refreshLeaderboard.bind(PGS);
+  const _origOnGameOver = PGS.onGameOver.bind(PGS);
+  PGS.onGameOver = async (score) => { cachedData = null; await _origOnGameOver(score); };
+
+  // Wire desktop tabs
+  const desktopTabs = document.querySelectorAll('#pgs-panel .pgs-tab');
+  desktopTabs.forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab, desktopTabs, document.getElementById('pgs-lb-body')));
+  });
+
+  // Wire mobile tabs
+  const mobileTabs = document.querySelectorAll('#mob-pgs-panel .pgs-tab');
+  mobileTabs.forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab, mobileTabs, document.getElementById('pgs-lb-body-mob')));
+  });
+
+  // Keep mobile sign-in/out buttons in sync
+  const origUpdateUI = () => {
+    const signed = PGS.isSignedIn();
+    ['mob-pgs-signin', 'mob-pgs-signout', 'mob-pgs-player'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (id === 'mob-pgs-signin')  el.style.display = signed ? 'none' : 'inline-block';
+      if (id === 'mob-pgs-signout') el.style.display = signed ? 'inline-block' : 'none';
+    });
+  };
+  document.addEventListener('pgs-ui-update', origUpdateUI);
+})();
+
+// ── Init PGS after GIS script loads ──────────────────────────
+window.addEventListener('load', () => {
+  if (window.google && window.google.accounts) {
+    PGS.init();
+  } else {
+    // GIS loads async — wait for it
+    const gisScript = document.querySelector('script[src*="accounts.google.com"]');
+    if (gisScript) gisScript.addEventListener('load', () => PGS.init());
+  }
+});
 </script>
 </body>
 </html>
