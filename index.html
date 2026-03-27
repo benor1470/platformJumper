@@ -69,11 +69,190 @@
       background: rgba(0,100,200,0.2);
     }
 
+    /* Powerup agenda */
+    .agenda {
+      margin-top: 1.4em;
+      background: rgba(0,15,50,0.65);
+      border: 1px solid rgba(0,150,255,0.18);
+      border-radius: 10px;
+      padding: 0.7em 1.1em;
+      width: min(420px, 88vw);
+    }
+    .agenda-title {
+      font-size: 0.72em; font-weight: bold; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #336688;
+      text-align: center; margin-bottom: 0.55em;
+    }
+    .agenda-row {
+      display: grid;
+      grid-template-columns: 1.6em 4.6em 1fr auto;
+      align-items: center; gap: 0.35em;
+      font-size: clamp(0.65em, 1.5vw, 0.8em);
+      padding: 0.18em 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .agenda-row:first-of-type { border-top: none; }
+    .agenda-icon { text-align: center; }
+    .agenda-name { font-weight: bold; }
+    .agenda-desc { color: #7799bb; }
+    .agenda-pts  { color: #ffdd44; font-weight: bold; white-space: nowrap; }
+
+    /* Overlay scroll on small screens */
+    #overlay { overflow-y: auto; padding: 1.2em 0.5em; }
+
+    /* ── Mobile title screen ── */
+    #overlay-mobile {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: #030519;
+      font-family: 'Segoe UI', Arial, sans-serif; color: #fff;
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    /* Left column: title + play */
+    #mob-left {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      flex: 0 0 42%;
+      padding: 1.2em 1.4em;
+      border-right: 1px solid rgba(0,180,255,0.12);
+      gap: 0.5em;
+    }
+    #mob-left h1 {
+      font-size: clamp(1.6em, 4.5vh, 2.4em);
+      color: #00ffff;
+      text-shadow: 0 0 20px #00ffff, 0 0 50px #0088ff;
+      text-align: center;
+      line-height: 1.1;
+      margin: 0;
+    }
+    #mob-tagline {
+      color: #88ccff;
+      font-size: clamp(0.7em, 1.6vh, 0.9em);
+      text-align: center;
+      margin: 0;
+    }
+    #mob-record {
+      color: #ffdd00;
+      font-size: clamp(0.7em, 1.6vh, 0.85em);
+      min-height: 1.2em;
+      text-align: center;
+    }
+    #mob-play-btn {
+      padding: 0.65em 2.6em;
+      font-size: clamp(1em, 2.4vh, 1.2em);
+      background: linear-gradient(135deg, #00ffff, #0077ff);
+      color: #000; border: none; border-radius: 50px;
+      cursor: pointer; font-weight: bold;
+      box-shadow: 0 0 22px #00ffff88;
+      transition: transform 0.1s, box-shadow 0.1s;
+      touch-action: manipulation;
+      margin-top: 0.3em;
+    }
+    #mob-play-btn:active { transform: scale(1.06); box-shadow: 0 0 36px #00ffff; }
+    .mob-hint {
+      color: #3d6080;
+      font-size: clamp(0.62em, 1.3vh, 0.76em);
+      text-align: center;
+    }
+
+    /* Right column: powerup list */
+    #mob-right {
+      flex: 1;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 1em 1.2em 1em 1em;
+      overflow: hidden;
+    }
+    .mob-agenda-title {
+      font-size: 0.62em; font-weight: bold; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #2a5570;
+      margin-bottom: 0.5em;
+    }
+    .mob-agenda-row {
+      display: grid;
+      grid-template-columns: 1.6em 4.4em 1fr auto;
+      align-items: center;
+      column-gap: 0.5em;
+      font-size: clamp(0.7em, 1.55vh, 0.85em);
+      padding: 0.22em 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .mob-agenda-row:first-of-type { border-top: none; }
+    .mob-agenda-pts  { color: #ffdd44; font-weight: bold; white-space: nowrap; text-align: right; }
+    .mob-agenda-desc { color: #6688aa; }
+    .mob-agenda-icon { font-size: 1.35em; line-height: 1; text-align: center; }
+
+    @media (pointer: coarse) {
+      #overlay        { display: none !important; }
+      #overlay-mobile { display: flex; }
+    }
+
     /* Danger vignette */
     #vignette {
       position: fixed; inset: 0; pointer-events: none;
       background: radial-gradient(ellipse at center, transparent 55%, rgba(200,0,0,0) 100%);
       opacity: 0; transition: opacity 0.1s;
+    }
+
+    /* Fullscreen prompt — mobile only, shown before entering fullscreen */
+    #fs-prompt {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: #030519;
+      flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1.2em;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      text-align: center;
+      padding: 2em;
+    }
+    #fs-prompt .fs-icon { font-size: 3.5em; opacity: 0.85; }
+    #fs-prompt h2 {
+      color: #00ffff;
+      font-size: clamp(1.2em, 5vw, 2em);
+      text-shadow: 0 0 20px #00ffff;
+      margin: 0;
+    }
+    #fs-prompt p {
+      color: #6688aa;
+      font-size: clamp(0.8em, 2.5vw, 1em);
+      margin: 0;
+    }
+    #fs-prompt-btn {
+      padding: 0.8em 3em;
+      font-size: clamp(1em, 3.5vw, 1.3em);
+      background: linear-gradient(135deg, #00ffff, #0077ff);
+      color: #000; border: none; border-radius: 50px;
+      cursor: pointer; font-weight: bold;
+      box-shadow: 0 0 28px #00ffff99;
+      touch-action: manipulation;
+      animation: pulse-fs 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse-fs {
+      0%, 100% { box-shadow: 0 0 28px #00ffff99; }
+      50%       { box-shadow: 0 0 55px #00ffff, 0 0 20px #0077ff; }
+    }
+    #fs-prompt-btn:active { transform: scale(0.97); }
+
+    /* Small exit button — visible during gameplay */
+    #fs-btn {
+      display: none;
+      position: fixed; bottom: 14px; right: 14px; z-index: 999;
+      background: rgba(0,180,255,0.15);
+      border: 1px solid rgba(0,180,255,0.4);
+      color: #00d4ff;
+      font-size: 18px;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      align-items: center; justify-content: center;
+      touch-action: manipulation;
+    }
+    #fs-btn:active { background: rgba(0,180,255,0.35); }
+    @media (pointer: coarse) {
+      #fs-prompt { display: flex; }
     }
   </style>
 </head>
@@ -89,23 +268,46 @@
 <div id="msgs"></div>
 <div id="vignette"></div>
 
+<div id="fs-prompt">
+  <div class="fs-icon">⛶</div>
+  <h2>Best played fullscreen</h2>
+  <p>Rotate your device to landscape<br>and tap below to go fullscreen</p>
+  <button id="fs-prompt-btn">Go Fullscreen</button>
+</div>
+
+<button id="fs-btn" title="Exit fullscreen" aria-label="Exit fullscreen">✕</button>
+
 <div id="overlay">
   <h1>Platform Jumper</h1>
   <p class="tagline">Stay on the platforms — don't fall!</p>
   <div id="record-line"></div>
   <button class="start-btn" id="start-btn">▶ &nbsp;Play</button>
   <div class="hints">
-    <span class="hint-key">←</span> <span class="hint-key">→</span> &nbsp;Move
-    &nbsp;|&nbsp; Touch left / right side to move<br>
-    Collect ⭐ stars for bonus score<br>
-    Platforms rotate at score 15 · speed up at 30
+    <span class="hint-key">←</span> <span class="hint-key">→</span> Arrow keys to move<br>
+    Collect ⭐ and powerups · platforms rotate at 15
+  </div>
+  <div id="agenda"></div>
+</div>
+
+<!-- Mobile-optimised title screen (landscape, no scroll) -->
+<div id="overlay-mobile">
+  <div id="mob-left">
+    <h1>Platform<br>Jumper</h1>
+    <p id="mob-tagline">Don't fall off!</p>
+    <div id="mob-record"></div>
+    <button id="mob-play-btn">▶ &nbsp;Play</button>
+    <p class="mob-hint">Touch either side of the screen to move</p>
+  </div>
+  <div id="mob-right">
+    <div class="mob-agenda-title">Powerups</div>
+    <div id="mob-agenda"></div>
   </div>
 </div>
 
+<script src="gameLogic.js"></script>
 <script>
 // ============================================================
 //  PLATFORM JUMPER — Web Edition
-//  Converted from React Native / Expo / Three.js original
 // ============================================================
 
 // ── Canvas setup ─────────────────────────────────────────────
@@ -118,6 +320,39 @@ function resize() {
 }
 resize();
 window.addEventListener('resize', () => { resize(); if (gameState === 'playing') initGame(false); });
+
+// ── Fullscreen / landscape (mobile) ──────────────────────────
+(function() {
+  const prompt = document.getElementById('fs-prompt');
+  const promptBtn = document.getElementById('fs-prompt-btn');
+  const exitBtn = document.getElementById('fs-btn');
+
+  async function enterFS() {
+    try {
+      await document.documentElement.requestFullscreen();
+      if (screen.orientation && screen.orientation.lock) {
+        await screen.orientation.lock('landscape').catch(() => {});
+      }
+    } catch(e) {}
+  }
+
+  async function exitFS() {
+    try {
+      await document.exitFullscreen();
+      if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
+    } catch(e) {}
+  }
+
+  function onFSChange() {
+    const inFS = !!document.fullscreenElement;
+    prompt.style.display  = inFS ? 'none' : '';   // '' lets media query control it
+    exitBtn.style.display = inFS ? 'flex' : 'none';
+  }
+
+  document.addEventListener('fullscreenchange', onFSChange);
+  promptBtn.addEventListener('click', enterFS);
+  exitBtn.addEventListener('click', exitFS);
+})();
 
 // ── roundRect polyfill (for older browsers) ──────────────────
 if (!CanvasRenderingContext2D.prototype.roundRect) {
@@ -137,24 +372,149 @@ if (!CanvasRenderingContext2D.prototype.roundRect) {
 }
 
 // ── Constants ────────────────────────────────────────────────
-const BOARD_COUNT      = 40;
-const BOARD_H          = 13;           // platform thickness (px)
-const GRAVITY          = 1300;         // px/s²
-const RESTITUTION      = 0.48;         // bounce factor
-const PLAYER_R         = 18;           // player radius
-const SCORE_PER_SEC    = 1;
-const ROTATE_AT        = 15;           // score threshold for rotation
-const SPEEDUP_AT       = 30;           // score threshold for speed boost
-const SPEED_BOOST      = 1.6;
-const SUBSTEPS         = 4;            // physics substeps per frame
+const BOARD_COUNT  = 18;
+const SCORE_PER_SEC = 1;
+const ROTATE_AT    = 15;
+const SPEEDUP_AT   = 30;
+const SPEED_BOOST  = 1.6;
+const SUBSTEPS     = 4;
+
+// ── Powerup config ────────────────────────────────────────────
+const POWERUPS = {
+  speed:   { color: '#ff8800', glow: '#ffaa00', icon: '⚡', label: 'FAST',    dur: 6, bonus: 3, desc: 'Move faster'            },
+  reverse: { color: '#cc44ff', glow: '#aa00ff', icon: '↔',  label: 'FLIP',    dur: 5, bonus: 5, desc: 'Controls reversed'      },
+  freeze:  { color: '#44ccff', glow: '#0099ff', icon: '❄',  label: 'FREEZE',  dur: 4, bonus: 4, desc: 'Platforms stop moving'  },
+  gravity: { color: '#44ff88', glow: '#00cc66', icon: '↕',  label: 'GRAVITY', dur: 4, bonus: 6, desc: 'Gravity flips — risky!' },
+  chaos:   { color: '#ff44aa', glow: '#ff0088', icon: '~',  label: 'CHAOS',   dur: 6, bonus: 7, desc: 'Screen shakes & rotates'},
+};
+
+const WAVES = [
+  { score:  0, msg: 'WAVE 1  —  Survive!' },
+  { score: 15, msg: 'WAVE 2  —  Platforms rotate!' },
+  { score: 30, msg: 'WAVE 3  —  Speed up!' },
+  { score: 45, msg: 'WAVE 4  —  Enemies incoming!' },
+  { score: 65, msg: 'WAVE 5  —  Tracker deployed!' },
+  { score: 90, msg: 'WAVE 6  —  Homing missiles!' },
+];
+
+// ── Build agenda from config ──────────────────────────────────
+(function buildAgenda() {
+  const el = document.getElementById('agenda');
+  let html = '<div class="agenda"><div class="agenda-title">Powerups</div>';
+  html += `<div class="agenda-row">
+    <span class="agenda-icon" style="color:#ffe020">⭐</span>
+    <span class="agenda-name" style="color:#ffe020">STAR</span>
+    <span class="agenda-desc">Bonus score</span>
+    <span class="agenda-pts">+2 pts</span>
+  </div>`;
+  for (const [, cfg] of Object.entries(POWERUPS)) {
+    html += `<div class="agenda-row">
+      <span class="agenda-icon" style="color:${cfg.color}">${cfg.icon}</span>
+      <span class="agenda-name" style="color:${cfg.color}">${cfg.label}</span>
+      <span class="agenda-desc">${cfg.desc}</span>
+      <span class="agenda-pts">+${cfg.bonus} pts</span>
+    </div>`;
+  }
+  html += '</div>';
+  el.innerHTML = html;
+})();
+
+// ── Build mobile agenda ───────────────────────────────────────
+(function buildMobileAgenda() {
+  const el = document.getElementById('mob-agenda');
+  let html = `<div class="mob-agenda-row">
+    <span class="mob-agenda-icon" style="color:#ffe020">⭐</span>
+    <span style="color:#ffe020;font-weight:bold">STAR</span>
+    <span class="mob-agenda-desc">Bonus score</span>
+    <span class="mob-agenda-pts">+2 pts</span>
+  </div>`;
+  for (const [, cfg] of Object.entries(POWERUPS)) {
+    html += `<div class="mob-agenda-row">
+      <span class="mob-agenda-icon" style="color:${cfg.color}">${cfg.icon}</span>
+      <span style="color:${cfg.color};font-weight:bold">${cfg.label}</span>
+      <span class="mob-agenda-desc">${cfg.desc}</span>
+      <span class="mob-agenda-pts">+${cfg.bonus} pts</span>
+    </div>`;
+  }
+  el.innerHTML = html;
+
+  document.getElementById('mob-play-btn').addEventListener('click', () => startGame());
+})();
 
 // ── State ─────────────────────────────────────────────────────
-let gameState = 'menu';  // 'menu' | 'playing'
+let gameState    = 'menu';  // 'menu' | 'playing'
+let gameOverTime = 0;
 let score     = 0;
 let maxScore  = 0;
 let player, boards, pickups;
+let enemies, bullets;
 let lastTime  = null;
 let raf       = null;
+let gameTime  = 0;
+let effects   = {};
+let particles   = [];
+let wave        = -1;
+let waveBannerTimer = 0;
+let waveBannerMsg   = '';
+let nearMissFlash   = 0;
+
+// ── Audio ─────────────────────────────────────────────────────
+let audioCtx = null;
+function ac() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playTone(freq, freqEnd, oscType, gainPeak, dur, delayMs = 0) {
+  setTimeout(() => {
+    try {
+      const a = ac();
+      const osc = a.createOscillator(), g = a.createGain();
+      osc.connect(g); g.connect(a.destination);
+      osc.type = oscType;
+      osc.frequency.setValueAtTime(freq, a.currentTime);
+      if (freqEnd) osc.frequency.exponentialRampToValueAtTime(freqEnd, a.currentTime + dur);
+      g.gain.setValueAtTime(0, a.currentTime);
+      g.gain.linearRampToValueAtTime(gainPeak, a.currentTime + 0.005);
+      g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + dur);
+      osc.start(); osc.stop(a.currentTime + dur + 0.01);
+    } catch(e) {}
+  }, delayMs);
+}
+
+function sndLand(impactVy) {
+  const p = Math.min(280, 70 + impactVy * 0.18);
+  playTone(p, p * 0.45, 'triangle', 0.35, 0.14);
+}
+function sndBounce() {
+  playTone(520, 1100, 'sine', 0.3, 0.12);
+  playTone(780, 1600, 'sine', 0.18, 0.1, 60);
+}
+function sndPickup() {
+  playTone(660, 1320, 'sine', 0.22, 0.18);
+  playTone(990, 1980, 'sine', 0.12, 0.14, 80);
+}
+function sndPowerup() {
+  playTone(440, 880, 'sine', 0.28, 0.2);
+  playTone(660, 1320, 'sine', 0.18, 0.2, 100);
+  playTone(880, 1760, 'sine', 0.1,  0.2, 200);
+}
+function sndNearMiss() {
+  playTone(180, 70, 'sawtooth', 0.12, 0.13);
+}
+function sndEnemyKill() {
+  playTone(200, 50, 'sawtooth', 0.45, 0.22);
+  playTone(440, 880, 'sine', 0.22, 0.2, 80);
+}
+function sndGameOver() {
+  playTone(300, 60, 'sine', 0.45, 0.7);
+  playTone(200, 40, 'triangle', 0.3, 0.5, 200);
+}
+function sndWave() {
+  playTone(330, 660, 'sine', 0.28, 0.25);
+  playTone(495, 990, 'sine', 0.2,  0.25, 160);
+  playTone(660, 1320, 'sine', 0.14, 0.25, 320);
+}
 
 // ── Input ─────────────────────────────────────────────────────
 const keys   = {};
@@ -164,19 +524,22 @@ document.addEventListener('keydown', e => {
   keys[e.key] = true;
   if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key)) e.preventDefault();
 });
-document.addEventListener('keyup',   e => { keys[e.key] = false; });
+document.addEventListener('keyup', e => { keys[e.key] = false; });
+
+function classifyTouch(t) {
+  const cx = t.clientX;
+  return cx < W / 2 ? 'left' : 'right';
+}
 
 canvas.addEventListener('touchstart', e => {
   e.preventDefault();
-  for (const t of e.changedTouches)
-    (t.clientX < W / 2 ? (touch.left = true) : (touch.right = true));
+  for (const t of e.changedTouches) touch[classifyTouch(t)] = true;
 }, { passive: false });
 
 canvas.addEventListener('touchend', e => {
   e.preventDefault();
   touch.left = touch.right = false;
-  for (const t of e.touches)
-    (t.clientX < W / 2 ? (touch.left = true) : (touch.right = true));
+  for (const t of e.touches) touch[classifyTouch(t)] = true;
 }, { passive: false });
 
 canvas.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
@@ -187,97 +550,115 @@ canvas.addEventListener('mousedown', e => {
 });
 canvas.addEventListener('mouseup',   () => { touch.left = touch.right = false; });
 
+document.addEventListener('pointerdown', () => {
+  if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+  else audioCtx.resume().catch(() => {});
+}, { once: false });
+
+// ── Platform kind helper ──────────────────────────────────────
+function randomBoardKind() {
+  const r = Math.random();
+  if (r < 0.18) return 'bounce';
+  if (r < 0.32) return 'fast';
+  if (r < 0.38) return 'crumble';
+  return 'normal';
+}
+
 // ── Init ──────────────────────────────────────────────────────
 function initGame(resetScore = true) {
-  if (resetScore) score = 0;
+  if (resetScore) { score = 0; gameTime = 0; effects = {}; }
   pickups = [];
+  enemies = [];
+  bullets = [];
+  particles = []; wave = -1; waveBannerTimer = 0; nearMissFlash = 0;
 
-  player = { x: W / 2, y: H * 0.22, vx: 0, vy: 0, r: PLAYER_R, trail: [] };
+  player = Object.assign(createPlayer(W, H), { trail: [] });
 
   const speedScale = W * 0.28;
 
   boards = [];
+  const mobile    = W < 500;
+  const minPct    = mobile ? 0.11 : 0.06;
+  const rangePct  = mobile ? 0.17 : 0.13;
+
   for (let i = 0; i < BOARD_COUNT; i++) {
-    const bw  = W * (0.06 + Math.random() * 0.13);
-    // Spread platforms across the screen; cluster more in the middle vertically
+    const bw    = W * (minPct + Math.random() * rangePct);
     const yBias = H * 0.15 + Math.random() * H * 0.72;
     boards.push({
-      x:        Math.random() * W,
-      y:        yBias,
-      w:        bw,
-      h:        BOARD_H,
-      angle:    0,
-      rotSpeed: (Math.random() - 0.5) * 3.2,   // rad/s
-      vx:       (Math.random() - 0.5) * speedScale,
-      vy:       (Math.random() - 0.5) * speedScale * 0.35,
-      hue:      Math.floor(Math.random() * 360),
+      x:          Math.random() * W,
+      y:          yBias,
+      w:          bw,
+      baseW:      bw,
+      h:          BOARD_H,
+      angle:      0,
+      angVel:     0,
+      swayPhase:  0,
+      swaySpeed:  0.5 + Math.random() * 0.8,
+      swayRank:   Math.random(),
+      age:        Math.random() * 8,             // stagger initial fade-outs
+      maxAge:     0,                             // set after kind is assigned
+      vx:         (Math.random() - 0.5) * speedScale,
+      vy:         (Math.random() - 0.5) * speedScale * 0.35,
+      hue:        Math.floor(Math.random() * 360),
+      kind:       randomBoardKind(),
     });
+    const bNew = boards[boards.length - 1];
+    bNew.maxAge = bNew.kind === 'crumble'
+      ? 4 + Math.random() * 4
+      : 22 + Math.random() * 12;
   }
 }
 
-// ── Physics ───────────────────────────────────────────────────
-function resolveCircleOBB(p, b) {
-  const ca = Math.cos(b.angle), sa = Math.sin(b.angle);
-  const dx = p.x - b.x,  dy = p.y - b.y;
+// Physics functions live in gameLogic.js
 
-  // World → local (rotate by -angle)
-  const lx =  dx * ca + dy * sa;
-  const ly = -dx * sa + dy * ca;
-
-  const hw = b.w / 2, hh = b.h / 2;
-  const cx = Math.max(-hw, Math.min(hw, lx));
-  const cy = Math.max(-hh, Math.min(hh, ly));
-
-  const ex = lx - cx, ey = ly - cy;
-  const dist2 = ex * ex + ey * ey;
-  if (dist2 >= p.r * p.r) return;
-
-  const dist = Math.sqrt(dist2);
-  let nx, ny;
-  if (dist < 0.001) {
-    const ox = hw - Math.abs(lx), oy = hh - Math.abs(ly);
-    if (ox < oy) { nx = lx < 0 ? -1 : 1; ny = 0; }
-    else         { nx = 0; ny = ly < 0 ? -1 : 1; }
-  } else {
-    nx = ex / dist; ny = ey / dist;
+function boardCurrentW(b) {
+  const t = b.maxAge > 0 ? b.age / b.maxAge : 0;
+  if (b.kind === 'crumble') {
+    // No stable phase — shrinks from the start
+    return b.baseW * Math.max(0.08, 1 - t * 1.1);
   }
-
-  // Local → world (rotate by +angle)
-  const wnx = nx * ca - ny * sa;
-  const wny = nx * sa + ny * ca;
-
-  // Push out
-  const pen = p.r - dist;
-  p.x += wnx * pen;
-  p.y += wny * pen;
-
-  // Reflect velocity with restitution
-  const dot = p.vx * wnx + p.vy * wny;
-  if (dot < 0) {
-    p.vx -= (1 + RESTITUTION) * dot * wnx;
-    p.vy -= (1 + RESTITUTION) * dot * wny;
-  }
+  if (t < 0.08)  return b.baseW * (0.15 + 0.85 * (t / 0.08));
+  if (t < 0.72)  return b.baseW;
+  return b.baseW * Math.max(0.15, 1 - (t - 0.72) / 0.28);
 }
 
 // ── Pickups ───────────────────────────────────────────────────
 function spawnPickup() {
-  if (pickups.length >= 2) return;
+  if (pickups.length >= 3) return;
+  const roll = Math.random();
+  const type = roll < 0.40 ? 'star'
+             : roll < 0.55 ? 'speed'
+             : roll < 0.67 ? 'reverse'
+             : roll < 0.77 ? 'freeze'
+             : roll < 0.85 ? 'gravity'
+             :               'chaos';
+  const gy = type === 'gravity'
+    ? H * 0.72 + Math.random() * H * 0.22
+    : H * 0.20 + Math.random() * H * 0.55;
   pickups.push({
     x:     W * 0.1 + Math.random() * W * 0.8,
-    y:     H * 0.25 + Math.random() * H * 0.5,
+    y:     gy,
     r:     15,
     phase: Math.random() * Math.PI * 2,
+    type,
   });
 }
 
 function checkPickups() {
   for (let i = pickups.length - 1; i >= 0; i--) {
     const pk = pickups[i];
-    const dx = player.x - pk.x, dy = player.y - pk.y;
-    if (dx * dx + dy * dy < (player.r + pk.r) ** 2) {
+    if (!isPickupCollected(player, pk)) continue;
+    pickups.splice(i, 1);
+    if (pk.type === 'star') {
       score += 2;
-      pickups.splice(i, 1);
       showMsg('+2 ⭐');
+      sndPickup();
+    } else {
+      const cfg = POWERUPS[pk.type];
+      effects[pk.type] = gameTime + cfg.dur;
+      score += cfg.bonus;
+      showMsg(cfg.icon + ' ' + cfg.label + '  +' + cfg.bonus);
+      sndPowerup();
     }
   }
 }
@@ -290,74 +671,295 @@ function showMsg(text) {
   setTimeout(() => el.remove(), 1150);
 }
 
+// ── Game-over helper ──────────────────────────────────────────
+function triggerGameOver() {
+  sndGameOver();
+  maxScore = Math.max(maxScore, Math.floor(score));
+  const recordText = maxScore > 0 ? '🏆 Best: ' + maxScore : '';
+  document.getElementById('record-line').textContent = recordText;
+  document.getElementById('mob-record').textContent  = recordText;
+  document.getElementById('overlay').style.display = 'flex';
+  document.getElementById('overlay-mobile').style.display = '';
+  gameState    = 'menu';
+  gameOverTime = performance.now();
+}
+
+// ── Particles ─────────────────────────────────────────────────
+function spawnParticles(x, y, count, color) {
+  for (let i = 0; i < count; i++) {
+    const ang = Math.random() * Math.PI * 2;
+    const spd = 80 + Math.random() * 200;
+    particles.push({ x, y, vx: Math.cos(ang)*spd, vy: Math.sin(ang)*spd - 80,
+                     r: 2 + Math.random()*3, life: 0.5 + Math.random()*0.4, maxLife: 0.9, color });
+  }
+}
+
+function spawnLandingParticles(x, y, impactVy) {
+  const count = Math.min(10, Math.floor(impactVy / 55));
+  if (count < 2) return;
+  for (let i = 0; i < count; i++) {
+    const ang = (Math.random() - 0.5) * Math.PI;   // horizontal fan
+    const spd = 50 + Math.random() * impactVy * 0.25;
+    const hue = 170 + Math.random() * 50;
+    particles.push({ x, y, vx: Math.cos(ang)*spd, vy: -Math.abs(Math.sin(ang)*spd)*0.4,
+                     r: 1.5 + Math.random()*2.5, life: 0.35 + Math.random()*0.3, maxLife: 0.65,
+                     color: `hsl(${hue},100%,70%)` });
+  }
+}
+
+// ── Enemies ───────────────────────────────────────────────────
+function spawnEnemy(type = 'normal') {
+  const side = Math.floor(Math.random() * 3);
+  let x, y, vx, vy;
+  const sp = W * (type === 'tracker' ? 0.025 : 0.05) + Math.random() * W * 0.03;
+  if (side === 0)      { x = -25;    y = H * 0.1 + Math.random() * H * 0.75; vx =  sp; vy = (Math.random()-0.5)*sp; }
+  else if (side === 1) { x = W + 25; y = H * 0.1 + Math.random() * H * 0.75; vx = -sp; vy = (Math.random()-0.5)*sp; }
+  else                 { x = W*0.1 + Math.random()*W*0.8; y = -25; vx = (Math.random()-0.5)*sp; vy = sp; }
+  const r = type === 'tracker' ? 20 : 13;
+  enemies.push({ x, y, vx, vy, r, type, fireTimer: 1.5 + Math.random() * 2 });
+}
+
+function updateEnemies(dt) {
+  // Spawn targets (aligned with waves)
+  const normalTarget  = score < 45 ? 0 : Math.min(2, 1 + Math.floor((score - 45) / 28));
+  const trackerTarget = score >= 65 ? 1 : 0;
+  const normals  = enemies.filter(e => e.type !== 'tracker').length;
+  const trackers = enemies.filter(e => e.type === 'tracker').length;
+  if (normals  < normalTarget)  spawnEnemy('normal');
+  if (trackers < trackerTarget) spawnEnemy('tracker');
+
+  const fireInterval   = Math.max(0.7, 2.8 - score * 0.028);
+  const bulletSpeed    = Math.max(220, W * 0.15 + score * 1.2);
+  const missileSpeed   = Math.max(160, W * 0.10 + score * 0.8);
+
+  // Kill-by-jumping: ball passes over enemy while moving upward
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const e = enemies[i];
+    if (player.vy < -100) {
+      const dx = player.x - e.x, dy = player.y - e.y;
+      if (dx*dx + dy*dy < (player.r + e.r * 1.4)**2) {
+        const pts = e.type === 'tracker' ? 15 : 8;
+        score += pts;
+        showMsg('✦ +' + pts);
+        spawnParticles(e.x, e.y, 14, e.type === 'tracker' ? '#aa00ff' : '#ff4400');
+        sndEnemyKill();
+        enemies.splice(i, 1);
+        continue;
+      }
+    }
+  }
+
+  enemies.forEach(e => {
+    e.x += e.vx * dt; e.y += e.vy * dt;
+    if (e.x < e.r)     { e.vx =  Math.abs(e.vx); e.x = e.r; }
+    if (e.x > W - e.r) { e.vx = -Math.abs(e.vx); e.x = W - e.r; }
+    if (e.y < e.r)     { e.vy =  Math.abs(e.vy); e.y = e.r; }
+    if (e.y > H - e.r) { e.vy = -Math.abs(e.vy); e.y = H - e.r; }
+
+    e.fireTimer -= dt;
+    if (e.fireTimer <= 0) {
+      const interval = e.type === 'tracker' ? fireInterval * 2.2 : fireInterval;
+      e.fireTimer = interval * (0.75 + Math.random() * 0.5);
+      const dx = player.x - e.x, dy = player.y - e.y;
+      const d  = Math.sqrt(dx*dx + dy*dy) || 1;
+      if (e.type === 'tracker') {
+        // Homing missile
+        const spd = missileSpeed;
+        bullets.push({ x: e.x, y: e.y, vx: dx/d*spd, vy: dy/d*spd,
+                        r: 8, type: 'missile', speed: spd, life: 6 });
+      } else {
+        bullets.push({ x: e.x, y: e.y, vx: dx/d*bulletSpeed, vy: dy/d*bulletSpeed,
+                        r: 6, type: 'bullet', life: 8 });
+      }
+    }
+  });
+
+  // Update bullets
+  for (let i = bullets.length - 1; i >= 0; i--) {
+    const b = bullets[i];
+    b.life -= dt;
+    if (b.life <= 0 || b.x < -80 || b.x > W+80 || b.y < -80 || b.y > H+80) {
+      bullets.splice(i, 1); continue;
+    }
+
+    if (b.type === 'missile') {
+      // Gradually steer toward player
+      const dx = player.x - b.x, dy = player.y - b.y;
+      const d  = Math.sqrt(dx*dx + dy*dy) || 1;
+      const turn = Math.min(1, 2.8 * dt);
+      b.vx += (dx/d * b.speed - b.vx) * turn;
+      b.vy += (dy/d * b.speed - b.vy) * turn;
+      const spd = Math.sqrt(b.vx*b.vx + b.vy*b.vy);
+      if (spd > 0) { b.vx = b.vx/spd * b.speed; b.vy = b.vy/spd * b.speed; }
+    }
+
+    b.x += b.vx * dt; b.y += b.vy * dt;
+
+    // Near-miss flash (bullet passed close but didn't hit)
+    const ddx = player.x - b.x, ddy = player.y - b.y;
+    const dist2 = ddx*ddx + ddy*ddy;
+    if (dist2 < (player.r + 55)**2 && dist2 > (player.r + b.r)**2) {
+      if (nearMissFlash < 0.1) sndNearMiss();
+      nearMissFlash = Math.max(nearMissFlash, 0.45);
+    }
+
+    // Hit detection
+    if (dist2 < (player.r + b.r)**2) {
+      triggerGameOver(); return;
+    }
+  }
+}
+
 // ── Update (with substeps) ────────────────────────────────────
 function update(dt) {
   dt = Math.min(dt, 0.05);
   score += SCORE_PER_SEC * dt;
 
+  player.grounded = false;
+  // Trail — record once per frame
+  player.trail = player.trail || [];
+  player.trail.unshift({ x: player.x, y: player.y });
+  if (player.trail.length > 14) player.trail.length = 14;
+
   const subDt = dt / SUBSTEPS;
   for (let s = 0; s < SUBSTEPS; s++) physicsStep(subDt);
+
+  if (gameState !== 'playing') return;  // physicsStep may have ended the game
 
   // Pickups
   if (Math.random() < dt * 0.6) spawnPickup();
   checkPickups();
   pickups.forEach(pk => { pk.phase += dt * 3; });
 
+  // Update particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx * dt; p.y += p.vy * dt;
+    p.vy += 400 * dt;   // gravity
+    p.life -= dt;
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+  // Near-miss flash decay
+  if (nearMissFlash > 0) nearMissFlash = Math.max(0, nearMissFlash - dt * 2.5);
+
+  // Wave advancement
+  const newWave = WAVES.filter(w => score >= w.score).length - 1;
+  if (newWave > wave) {
+    wave = newWave;
+    waveBannerTimer = 3.5;
+    waveBannerMsg = WAVES[wave].msg;
+    sndWave();
+  }
+  if (waveBannerTimer > 0) waveBannerTimer -= dt;
+
+  // Enemies + bullets
+  updateEnemies(dt);
+  if (gameState !== 'playing') return;
+
   // HUD
   document.getElementById('score').textContent = Math.floor(score);
   document.getElementById('best').textContent  = 'Best: ' + maxScore;
 
   // Danger vignette
-  const danger = Math.max(0, (player.y - H * 0.75) / (H * 0.25));
+  const hasGravityHud = (effects.gravity || 0) > gameTime;
+  const danger = hasGravityHud
+    ? Math.max(0, (H * 0.25 - player.y) / (H * 0.25))
+    : Math.max(0, (player.y - H * 0.75) / (H * 0.25));
   document.getElementById('vignette').style.opacity = danger;
 }
 
 function physicsStep(dt) {
-  const moveLeft  = keys['ArrowLeft']  || keys['a'] || keys['A'] || touch.left;
-  const moveRight = keys['ArrowRight'] || keys['d'] || keys['D'] || touch.right;
-  const speedX = W * 0.44;
+  gameTime += dt;
 
-  if      (moveLeft)  player.vx = -speedX;
-  else if (moveRight) player.vx =  speedX;
-  else                player.vx *= Math.pow(0.05, dt);  // friction
+  // ── Active effect flags ──
+  const hasSpeed   = (effects.speed   || 0) > gameTime;
+  const hasReverse = (effects.reverse || 0) > gameTime;
+  const hasFreeze  = (effects.freeze  || 0) > gameTime;
+  const hasGravity = (effects.gravity || 0) > gameTime;
 
-  player.vy += GRAVITY * dt;
-  player.x  += player.vx * dt;
-  player.y  += player.vy * dt;
+  // Input (with optional reversal)
+  const rawLeft   = keys['ArrowLeft']  || keys['a'] || keys['A'] || touch.left;
+  const rawRight  = keys['ArrowRight'] || keys['d'] || keys['D'] || touch.right;
+  const moveLeft  = hasReverse ? rawRight : rawLeft;
+  const moveRight = hasReverse ? rawLeft  : rawRight;
 
-  // Wall collision
-  if (player.x < player.r)     { player.x = player.r;     player.vx =  Math.abs(player.vx) * 0.4; }
-  if (player.x > W - player.r) { player.x = W - player.r; player.vx = -Math.abs(player.vx) * 0.4; }
+  // Gravity (optionally flipped)
+  if (hasGravity) player.vy -= GRAVITY * dt;
+  else            applyGravity(player, dt);
 
-  // Game over
-  if (player.y > H + player.r * 3) {
-    maxScore = Math.max(maxScore, Math.floor(score));
-    const rec = document.getElementById('record-line');
-    rec.textContent = maxScore > 0 ? '🏆 Best: ' + maxScore : '';
-    document.getElementById('overlay').style.display = 'flex';
-    gameState = 'menu';
-    return;
+  applyMovement(player, dt, moveLeft, moveRight, W, hasSpeed ? 1.8 : 1);
+
+  // Integrate position separately — velocity and position are decoupled
+  player.x += player.vx * dt;
+  player.y += player.vy * dt;
+
+  applyWallBounds(player, W);
+
+  if (isGameOver(player, H) || (hasGravity && player.y < -player.r * 3)) {
+    triggerGameOver(); return;
   }
 
   // Boards
   const rotating   = score > ROTATE_AT;
   const speedMult  = score > SPEEDUP_AT ? SPEED_BOOST : 1.0;
 
+  // Sway parameters scale with level
+  const swayT     = Math.max(0, score - ROTATE_AT);
+  const swayFrac  = Math.min(1.0, swayT / 40);          // 0→1 over 40 pts after unlock
+  const swayMax   = Math.min(30, 6 + swayT * 0.6) * (Math.PI / 180); // 6°→30°
+
   boards.forEach(b => {
-    b.x += b.vx * speedMult * dt;
-    b.y += b.vy * dt;
+    // Age the board; respawn when fully faded
+    b.age += dt;
+    if (b.age >= b.maxAge) {
+      b.age      = 0;
+      b.kind     = randomBoardKind();
+      b.baseW    = W * (0.07 + Math.random() * 0.12);
+      b.w        = b.baseW;
+      b.maxAge   = b.kind === 'crumble'
+        ? Math.max(2.5, (25 - score * 0.14) * 0.22 * (0.65 + Math.random() * 0.7))
+        : Math.max(7, 25 - score * 0.14) * (0.65 + Math.random() * 0.7);
+      b.x        = Math.random() * W;
+      b.y        = H * 0.15 + Math.random() * H * 0.72;
+      b.angle    = 0; b.angVel = 0;
+      return;  // skip collision on respawn frame
+    }
 
-    // Bounce off walls
-    if (b.x < 0)     { b.vx = Math.abs(b.vx);  b.x = 1; }
-    if (b.x > W)     { b.vx = -Math.abs(b.vx); b.x = W - 1; }
-    if (b.y < H * 0.08) { b.vy = Math.abs(b.vy);  b.y = H * 0.08 + 1; }
-    if (b.y > H * 0.94) { b.vy = -Math.abs(b.vy); b.y = H * 0.94 - 1; }
+    if (!hasFreeze) {
+      const bSpeed = b.kind === 'fast' ? speedMult * 2.2 : speedMult;
+      b.x += b.vx * bSpeed * dt;
+      b.y += b.vy * dt;
+      if (b.x < 0)        { b.vx = Math.abs(b.vx);  b.x = 1; }
+      if (b.x > W)        { b.vx = -Math.abs(b.vx); b.x = W - 1; }
+      if (b.y < H * 0.08) { b.vy = Math.abs(b.vy);  b.y = H * 0.08 + 1; }
+      if (b.y > H * 0.94) { b.vy = -Math.abs(b.vy); b.y = H * 0.94 - 1; }
+    }
 
-    if (rotating) b.angle += b.rotSpeed * dt;
-    else          b.angle  = 0;
+    b.w = boardCurrentW(b);
 
-    resolveCircleOBB(player, b);
+    if (rotating && b.swayRank < swayFrac) {
+      const phase = gameTime * b.swaySpeed + b.swayPhase;
+      b.angle  = Math.max(-swayMax, Math.min(swayMax, swayMax * Math.sin(phase)));
+      b.angVel = swayMax * b.swaySpeed * Math.cos(phase);
+    } else {
+      b.angle  = 0; b.angVel = 0;
+    }
+
+    const prevVy = player.vy;
+    const wasGrounded = player.grounded;
+    const didHit = resolveCircleOBB(player, b);
+    if (!wasGrounded && player.grounded && prevVy > 180) {
+      spawnLandingParticles(player.x, player.y + player.r, prevVy);
+      sndLand(prevVy);
+    }
+    // Bounce pad: extra upward launch on landing
+    if (didHit && b.kind === 'bounce' && !wasGrounded && player.grounded) {
+      player.vy = -Math.max(900, Math.abs(prevVy) * 1.5);
+      player.grounded = false;
+      sndBounce();
+    }
   });
+
 }
 
 // ── Draw ──────────────────────────────────────────────────────
@@ -382,22 +984,41 @@ function drawBackground() {
 }
 
 function drawBoard(b) {
+  const lifeRatio = b.maxAge > 0 ? b.age / b.maxAge : 0;
+  const alpha     = lifeRatio < 0.72 ? 1 : Math.max(0, 1 - (lifeRatio - 0.72) / 0.28);
+  if (alpha <= 0) return;
+
   ctx.save();
+  ctx.globalAlpha = alpha;
   ctx.translate(b.x, b.y);
   ctx.rotate(b.angle);
 
-  const h  = b.hue;
   const hw = b.w / 2, hh = b.h / 2;
   const r  = hh;   // corner radius
 
+  // Per-type color overrides
+  let glowColor, gradTop, gradBot;
+  if (b.kind === 'bounce') {
+    glowColor = '#aaff44'; gradTop = '#ccff55'; gradBot = '#558800';
+  } else if (b.kind === 'fast') {
+    glowColor = '#ff6622'; gradTop = '#ff8844'; gradBot = '#882200';
+  } else if (b.kind === 'crumble') {
+    glowColor = '#9966cc'; gradTop = '#aa77dd'; gradBot = '#442266';
+  } else {
+    const h = b.hue;
+    glowColor = `hsl(${h}, 100%, 65%)`;
+    gradTop   = `hsl(${h}, 75%, 68%)`;
+    gradBot   = `hsl(${h}, 55%, 38%)`;
+  }
+
   // Glow
-  ctx.shadowColor = `hsl(${h}, 100%, 65%)`;
+  ctx.shadowColor = glowColor;
   ctx.shadowBlur  = 10;
 
   // Body gradient
   const grad = ctx.createLinearGradient(-hw, -hh, -hw, hh);
-  grad.addColorStop(0, `hsl(${h}, 75%, 68%)`);
-  grad.addColorStop(1, `hsl(${h}, 55%, 38%)`);
+  grad.addColorStop(0, gradTop);
+  grad.addColorStop(1, gradBot);
   ctx.fillStyle = grad;
   ctx.beginPath();
   ctx.roundRect(-hw, -hh, b.w, b.h, r);
@@ -446,26 +1067,77 @@ function drawPickup(pk) {
   ctx.save();
   ctx.translate(pk.x, pk.y + Math.sin(pk.phase) * 6);
 
-  ctx.shadowColor = '#ffdd00';
-  ctx.shadowBlur  = 20;
-  ctx.fillStyle   = '#ffe020';
-  ctx.strokeStyle = '#ff7700';
-  ctx.lineWidth   = 1.5;
-
-  // 5-pointed star
-  const spikes = 5, inner = pk.r * 0.42;
-  ctx.beginPath();
-  for (let i = 0; i < spikes * 2; i++) {
-    const ang = (i * Math.PI / spikes) - Math.PI / 2;
-    const r   = i % 2 === 0 ? pk.r : inner;
-    i === 0 ? ctx.moveTo(Math.cos(ang) * r, Math.sin(ang) * r)
-            : ctx.lineTo(Math.cos(ang) * r, Math.sin(ang) * r);
+  if (pk.type === 'star') {
+    ctx.shadowColor = '#ffdd00';
+    ctx.shadowBlur  = 20;
+    ctx.fillStyle   = '#ffe020';
+    ctx.strokeStyle = '#ff7700';
+    ctx.lineWidth   = 1.5;
+    const spikes = 5, inner = pk.r * 0.42;
+    ctx.beginPath();
+    for (let i = 0; i < spikes * 2; i++) {
+      const ang = (i * Math.PI / spikes) - Math.PI / 2;
+      const r   = i % 2 === 0 ? pk.r : inner;
+      i === 0 ? ctx.moveTo(Math.cos(ang) * r, Math.sin(ang) * r)
+              : ctx.lineTo(Math.cos(ang) * r, Math.sin(ang) * r);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  } else {
+    const cfg = POWERUPS[pk.type];
+    // Glowing ring
+    ctx.shadowColor = cfg.glow;
+    ctx.shadowBlur  = 22;
+    ctx.strokeStyle = cfg.color;
+    ctx.lineWidth   = 2.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, pk.r, 0, Math.PI * 2);
+    ctx.stroke();
+    // Inner fill
+    ctx.shadowBlur  = 0;
+    ctx.fillStyle   = cfg.color + '33';
+    ctx.fill();
+    // Icon
+    ctx.fillStyle    = '#ffffff';
+    ctx.font         = `bold ${Math.round(pk.r * 1.1)}px Arial`;
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(cfg.icon, 0, 1);
   }
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
 
   ctx.restore();
+}
+
+function drawEffects() {
+  const fontSize = Math.round(H * 0.024);
+  let y = 16 + fontSize;
+  for (const [key, exp] of Object.entries(effects)) {
+    if (exp <= gameTime) continue;
+    const cfg = POWERUPS[key];
+    const rem = Math.ceil(exp - gameTime);
+
+    ctx.save();
+    // Background pill
+    const label = cfg.icon + ' ' + cfg.label + ' ' + rem + 's';
+    ctx.font = `bold ${fontSize}px Segoe UI, Arial`;
+    const tw = ctx.measureText(label).width;
+    const pw = tw + 20, ph = fontSize + 10;
+    const px = W - pw - 12, py = y - fontSize - 2;
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.beginPath();
+    ctx.roundRect(px, py, pw, ph, ph / 2);
+    ctx.fill();
+    // Text
+    ctx.fillStyle   = cfg.color;
+    ctx.shadowColor = cfg.glow;
+    ctx.shadowBlur  = 8;
+    ctx.textAlign   = 'right';
+    ctx.fillText(label, W - 12, y);
+    ctx.restore();
+
+    y += fontSize + 14;
+  }
 }
 
 function drawDifficultyHint() {
@@ -498,12 +1170,163 @@ function drawDifficultyHint() {
   }
 }
 
+function drawEnemy(e) {
+  ctx.save();
+  ctx.translate(e.x, e.y);
+  if (e.type === 'tracker') {
+    // Tracker: large pulsing ring with dark core
+    const pulse = 0.7 + 0.3 * Math.sin(gameTime * 4);
+    ctx.shadowColor = '#aa00ff';
+    ctx.shadowBlur  = 24 * pulse;
+    ctx.strokeStyle = '#cc44ff';
+    ctx.lineWidth   = 3;
+    ctx.beginPath(); ctx.arc(0, 0, e.r, 0, Math.PI*2); ctx.stroke();
+    ctx.fillStyle = '#330044';
+    ctx.beginPath(); ctx.arc(0, 0, e.r * 0.6, 0, Math.PI*2); ctx.fill();
+    // Inner diamond
+    ctx.rotate(gameTime * 2.2);
+    ctx.strokeStyle = '#ee88ff';
+    ctx.lineWidth = 2;
+    const s = e.r * 0.45;
+    ctx.beginPath(); ctx.moveTo(0,-s); ctx.lineTo(s,0); ctx.lineTo(0,s); ctx.lineTo(-s,0); ctx.closePath(); ctx.stroke();
+  } else {
+    ctx.rotate(gameTime * 1.8);
+    ctx.shadowColor = '#ff2200'; ctx.shadowBlur = 18;
+    ctx.fillStyle = '#cc1100'; ctx.strokeStyle = '#ff5533'; ctx.lineWidth = 2;
+    const s = e.r;
+    ctx.beginPath(); ctx.moveTo(0,-s); ctx.lineTo(s,0); ctx.lineTo(0,s); ctx.lineTo(-s,0); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawBullet(b) {
+  ctx.save();
+  if (b.type === 'missile') {
+    const pulse = 0.6 + 0.4 * Math.sin(gameTime * 12);
+    ctx.shadowColor = '#cc00ff'; ctx.shadowBlur = 18 * pulse;
+    ctx.fillStyle = '#aa33ff';
+    ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill();
+    // Glow ring
+    ctx.strokeStyle = '#ee88ff'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(b.x, b.y, b.r * 1.6, 0, Math.PI*2); ctx.stroke();
+  } else {
+    ctx.shadowColor = '#ff4400'; ctx.shadowBlur = 14;
+    ctx.fillStyle = '#ff6622';
+    ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawParticles() {
+  particles.forEach(p => {
+    const alpha = Math.max(0, p.life / p.maxLife);
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.shadowColor = p.color; ctx.shadowBlur = 8;
+    ctx.fillStyle   = p.color;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r * alpha, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+  });
+}
+
+function drawNearMissFlash() {
+  if (nearMissFlash <= 0) return;
+  ctx.save();
+  ctx.globalAlpha = nearMissFlash * 0.5;
+  ctx.fillStyle = '#ff0000';
+  ctx.fillRect(0, 0, W, H);
+  ctx.restore();
+}
+
+function drawWaveBanner() {
+  if (waveBannerTimer <= 0) return;
+  const t     = waveBannerTimer;
+  const alpha = Math.min(1, t * 2) * Math.min(1, (t > 0.5 ? 1 : t * 2));
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.font        = `bold ${Math.round(H * 0.055)}px Segoe UI, Arial`;
+  ctx.textAlign   = 'center';
+  ctx.fillStyle   = '#ffffff';
+  ctx.shadowColor = '#00ffff';
+  ctx.shadowBlur  = 30;
+  ctx.fillText(waveBannerMsg, W / 2, H * 0.42);
+  ctx.restore();
+}
+
+function drawPlayerArrow() {
+  // Only show when ball is fully above the screen
+  if (player.y + player.r >= 0) return;
+  const dist = Math.round(-(player.y + player.r));
+
+  const cx = Math.max(34, Math.min(W - 34, player.x));
+  const tipY   = 14;
+  const headH  = 16;
+  const headW  = 14;
+  const stemH  = 20;
+  const stemW  = 5;
+
+  ctx.save();
+  ctx.shadowColor = '#00ffff';
+  ctx.shadowBlur  = 16;
+  ctx.fillStyle   = '#00ffff';
+
+  // Arrow head + stem (pointing up)
+  ctx.beginPath();
+  ctx.moveTo(cx,             tipY);
+  ctx.lineTo(cx - headW,     tipY + headH);
+  ctx.lineTo(cx - stemW,     tipY + headH);
+  ctx.lineTo(cx - stemW,     tipY + headH + stemH);
+  ctx.lineTo(cx + stemW,     tipY + headH + stemH);
+  ctx.lineTo(cx + stemW,     tipY + headH);
+  ctx.lineTo(cx + headW,     tipY + headH);
+  ctx.closePath();
+  ctx.fill();
+
+  // Distance label below arrow
+  ctx.shadowBlur  = 0;
+  ctx.fillStyle   = 'rgba(200,240,255,0.92)';
+  ctx.font        = `bold ${Math.round(H * 0.021)}px Segoe UI, Arial`;
+  ctx.textAlign   = 'center';
+  ctx.fillText(dist + ' px', cx, tipY + headH + stemH + 16);
+
+  ctx.restore();
+}
+
+
 function draw() {
+  const hasChaos = (effects.chaos || 0) > gameTime;
+
+  // ── World layer ───────────────────────────────────────────────
+  ctx.save();
+  if (hasChaos) {
+    const t = gameTime;
+    ctx.translate(W/2 + Math.sin(t*9.3)*10, H/2 + Math.cos(t*7.7)*7);
+    ctx.rotate(Math.sin(t*2.2) * 7 * Math.PI/180);
+    ctx.translate(-W/2, -H/2);
+  }
   drawBackground();
   boards.forEach(drawBoard);
   pickups.forEach(drawPickup);
+  drawParticles();
+  bullets.forEach(drawBullet);
+  enemies.forEach(drawEnemy);
+  // Trail
+  (player.trail || []).forEach((pt, i) => {
+    const alpha = (1 - i/14) * 0.30;
+    const r     = player.r * (1 - i/14) * 0.65;
+    ctx.save(); ctx.globalAlpha = alpha; ctx.shadowColor='#00ffff'; ctx.shadowBlur=6;
+    ctx.fillStyle='#00aaff'; ctx.beginPath(); ctx.arc(pt.x,pt.y,r,0,Math.PI*2); ctx.fill(); ctx.restore();
+  });
   drawPlayer(player);
+  drawPlayerArrow();
+  ctx.restore();
+
+  // ── UI layer ──────────────────────────────────────────────────
+
+  drawWaveBanner();
   drawDifficultyHint();
+  drawEffects();
 }
 
 // ── Game loop ─────────────────────────────────────────────────
@@ -523,6 +1346,8 @@ function loop(ts) {
 
 function startGame() {
   document.getElementById('overlay').style.display = 'none';
+  document.getElementById('overlay-mobile').style.display = 'none';
+  if (audioCtx) audioCtx.resume().catch(() => {});
   initGame();
   gameState = 'playing';
   lastTime  = null;
@@ -532,9 +1357,13 @@ function startGame() {
 
 document.getElementById('start-btn').addEventListener('click', startGame);
 
-// Also allow spacebar / Enter to start from menu
+// Spacebar / Enter start from menu; arrows restart after 1 s on game-over screen
 document.addEventListener('keydown', e => {
-  if (gameState === 'menu' && (e.key === ' ' || e.key === 'Enter')) startGame();
+  if (gameState !== 'menu') return;
+  const isConfirm = e.key === ' ' || e.key === 'Enter';
+  const isArrow   = e.key === 'ArrowLeft' || e.key === 'ArrowRight';
+  const postGame  = gameOverTime > 0 && performance.now() - gameOverTime > 1000;
+  if (isConfirm || (isArrow && postGame)) startGame();
 });
 
 // Draw static background while on menu
